@@ -1,0 +1,899 @@
+{
+	"info": {
+		"_postman_id": "3093321f-fc59-4366-aea6-3a4719b06e90",
+		"name": "B2BOMS-8",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7556010"
+	},
+	"item": [
+		{
+			"name": "Escenrios 1 y 4",
+			"item": [
+				{
+					"name": "1 - Get Order Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const id = jsonData.records[0].Id;",
+									"",
+									"if (!jsonData.error) {",
+									"    const context = pm.collectionVariables;",
+									"    context.set(\"current_order_id\", id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/query/?q=SELECT Id,Submitter_Id__c,Has_Submitted_Cart_been_Updated__c FROM OrderSummary WHERE OriginalOrder.OrderNumber = '00001041'",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"query",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "SELECT Id,Submitter_Id__c,Has_Submitted_Cart_been_Updated__c FROM OrderSummary WHERE OriginalOrder.OrderNumber = '00001041'"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Add External Reference Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let result = '';\r",
+									"const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"const charactersLength = characters.length;\r",
+									"let counter = 0;\r",
+									"while (counter < 8) {\r",
+									"    result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"    counter += 1;\r",
+									"}\r",
+									"pm.collectionVariables.set(\"random_id\", result)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"External_Reference_Id__c\": \"{{random_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/OrderSummary/{{current_order_id}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"OrderSummary",
+								"{{current_order_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Escenarios 2 y 5",
+			"item": [
+				{
+					"name": "1 - Get Order Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const id = jsonData.records[0].Id;",
+									"",
+									"if (!jsonData.error) {",
+									"    const context = pm.collectionVariables;",
+									"    context.set(\"current_order_id\", id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/query/?q=SELECT Id FROM OrderSummary WHERE OriginalOrder.OrderNumber = '00001039'",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"query",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "SELECT Id FROM OrderSummary WHERE OriginalOrder.OrderNumber = '00001039'"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Get Delivery Method Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const id = jsonData.records[0].Id;",
+									"",
+									"if (!jsonData.error) {",
+									"    const context = pm.collectionVariables;",
+									"    context.set(\"current_delivery_method_id\", id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/query/?q=SELECT Id, Name,CreatedDate FROM OrderDeliveryMethod WHERE CreatedDate >= {{today}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"query",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "SELECT Id, Name,CreatedDate FROM OrderDeliveryMethod WHERE CreatedDate >= {{today}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Add External Reference Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let result = '';\r",
+									"const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"const charactersLength = characters.length;\r",
+									"let counter = 0;\r",
+									"while (counter < 8) {\r",
+									"    result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"    counter += 1;\r",
+									"}\r",
+									"pm.collectionVariables.set(\"random_id\", '201' + result)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"External_Reference_Id__c\": \"{{random_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/OrderSummary/{{current_order_id}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"OrderSummary",
+								"{{current_order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Create Fulfilled Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let result = '';\r",
+									"const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"const charactersLength = characters.length;\r",
+									"let counter = 0;\r",
+									"while (counter < 6) {\r",
+									"    result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"    counter += 1;\r",
+									"}\r",
+									"pm.collectionVariables.set(\"random_id2\", '50' + result)\r",
+									"let lastPreparationDate = new Date(new Date().setDate(new Date().getDate() - 2));\r",
+									"pm.collectionVariables.set('last_preparation_date', lastPreparationDate.toISOString())"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"OrderSummaryId\": \"{{current_order_id}}\",\n    \"Status\": \"Borrador\",\n    \"FulfilledToName\": \"Test\",\n    \"VehicleLicense__c\": \"AACL99\",\n    \"Transport_Number__c\": 1112233,\n    \"External_Reference_Id__c\": \"{{random_id2}}\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/FulfillmentOrder",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"FulfillmentOrder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Escenario 3",
+			"item": [
+				{
+					"name": "1 - Get Order Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const id = jsonData.records[0].Id;",
+									"",
+									"if (!jsonData.error) {",
+									"    const context = pm.collectionVariables;",
+									"    context.set(\"current_order_id\", id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/query/?q=SELECT Id FROM OrderSummary WHERE OriginalOrder.OrderNumber = '00001041'",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"query",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "SELECT Id FROM OrderSummary WHERE OriginalOrder.OrderNumber = '00001041'"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Add External Reference Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let result = '';\r",
+									"const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"const charactersLength = characters.length;\r",
+									"let counter = 0;\r",
+									"while (counter < 8) {\r",
+									"    result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"    counter += 1;\r",
+									"}\r",
+									"pm.collectionVariables.set(\"random_id\", '201' + result)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"External_Reference_Id__c\": \"{{random_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/OrderSummary/{{current_order_id}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"OrderSummary",
+								"{{current_order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Create Fulfillment Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const id = jsonData.id\r",
+									"\r",
+									"if (!jsonData.error) {\r",
+									"    const context = pm.collectionVariables;\r",
+									"    context.set(\"current_fulfillment_order_id\", jsonData.id);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let result = '';\r",
+									"const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"const charactersLength = characters.length;\r",
+									"let counter = 0;\r",
+									"while (counter < 6) {\r",
+									"    result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"    counter += 1;\r",
+									"}\r",
+									"pm.collectionVariables.set(\"random_id2\", '50' + result)\r",
+									"let lastPreparationDate = new Date(new Date().setDate(new Date().getDate() - 2));\r",
+									"pm.collectionVariables.set('last_preparation_date', lastPreparationDate.toISOString())"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"OrderSummaryId\": \"{{current_order_id}}\",\n    \"Status\": \"Borrador\",\n    \"FulfilledToName\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/FulfillmentOrder",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"FulfillmentOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Update Fulfillment Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let result = '';\r",
+									"const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"const charactersLength = characters.length;\r",
+									"let counter = 0;\r",
+									"while (counter < 8) {\r",
+									"    result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"    counter += 1;\r",
+									"}\r",
+									"pm.collectionVariables.set(\"random_id\", '201' + result)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"VehicleLicense__c\": \"AACL99\",\n    \"Transport_Number__c\": 1112233,\n    \"External_Reference_Id__c\": \"{{random_id2}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/FulfillmentOrder/{{current_fulfillment_order_id}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"FulfillmentOrder",
+								"{{current_fulfillment_order_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Auth Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"const id = jsonData.id.split('/');\r",
+							"\r",
+							"if (!jsonData.error) {\r",
+							"    const context = pm.environment.name ? pm.environment : pm.collectionVariables;\r",
+							"    context.set(\"access_token\", jsonData.access_token);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{sf_client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{sf_client_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{sf_user_name}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{sf_password}}{{sf_user_token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{sf_url}}/services/oauth2/token",
+					"host": [
+						"{{sf_url}}"
+					],
+					"path": [
+						"services",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "current_order_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "random_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "random_id2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "today",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "current_delivery_method_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "last_preparation_date",
+			"value": ""
+		},
+		{
+			"key": "current_fulfillment_order_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
